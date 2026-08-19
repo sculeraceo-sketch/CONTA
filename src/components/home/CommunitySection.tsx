@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Users, MessageCircle, Lightbulb } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import communityOriginal from "@/assets/landing/community.png";
 
 export default function CommunitySection() {
   const navigate = useNavigate();
@@ -46,9 +47,9 @@ export default function CommunitySection() {
             {/* Image */}
             <div className="flex justify-center lg:justify-start order-2 lg:order-1">
               <motion.img
-                src="https://i.ibb.co/pv6tgXJL/04e7493f-b2da-4ffe-9309-685b271d1f76.png"
+                src={communityOriginal}
                 alt="Comunidade Muwoyo"
-                className="w-full h-auto rounded-2xl shadow-2xl max-w-md"
+                className="block w-full max-w-md h-auto rounded-2xl shadow-2xl object-cover"
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}

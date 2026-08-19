@@ -11,7 +11,7 @@ export function PrivacyPolicyViewer() {
               Política de Privacidade
             </CardTitle>
             <p className="text-center text-gray-600 mt-2">
-              Última atualização: 10 Maio de 2026
+              Última atualização: 18 Agosto de 2026
             </p>
           </CardHeader>
           <CardContent>
@@ -48,6 +48,10 @@ export function PrivacyPolicyViewer() {
                       Informações de pagamento (processadas por terceiros)
                     </li>
                     <li>
+                      Registos de créditos de teste, bónus de activação e
+                      recargas, incluindo datas e referências de pagamento.
+                    </li>
+                    <li>
                       Conteúdo configurado (informações sobre o negócio,
                       produtos, regras de atendimento)
                     </li>
@@ -72,7 +76,9 @@ export function PrivacyPolicyViewer() {
                   <ul className="list-disc ml-6 space-y-1">
                     <li>Fornecer e manter os serviços da plataforma</li>
                     <li>Treinar e melhorar o sistema de IA</li>
-                    <li>Processar pagamentos e gerenciar assinaturas</li>
+                    <li>Processar o setup, activação e recargas solicitadas</li>
+                    <li>Controlar o saldo de teste, bónus e mensagens utilizadas</li>
+                    <li>Registar confirmações de pagamento e activações administrativas</li>
                     <li>Enviar comunicações importantes sobre o serviço</li>
                     <li>Garantir a segurança e integridade da plataforma</li>
                     <li>Cumprir obrigações legais e regulatórias</li>

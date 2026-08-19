@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import CommercialActivationQueue from "@/components/CommercialActivationQueue";
 
 type Row = {
   user_id: string;
@@ -54,6 +55,7 @@ type Row = {
   created_at: string | null;
   created_by: string | null;
   business_name: string | null;
+  account_status?: string | null;
   instances?: { instance_name?: string | null }[];
   role?: string;
 };
@@ -92,7 +94,7 @@ export default function AdminDashboard() {
     const { data: profiles } = await sb
       .from("profiles")
       .select(
-        "user_id,full_name,phone,status,is_suspended,message_limit,messages_received,created_at,created_by,business_name",
+        "user_id,full_name,phone,status,is_suspended,message_limit,messages_received,created_at,created_by,business_name,account_status",
       )
       .order("created_at", { ascending: false });
     const { data: roles } = await sb.from("user_roles").select("user_id,role");
@@ -118,6 +120,12 @@ export default function AdminDashboard() {
           : filter === "empty"
             ? Number(u.message_limit || 0) - Number(u.messages_received || 0) <=
               0
+            : filter === "trial"
+              ? u.account_status === "trial"
+              : filter === "awaiting_activation"
+                ? u.account_status === "awaiting_activation"
+                : filter === "commercial_active"
+                  ? u.account_status === "active"
             : true,
     )
     .filter((u) =>
@@ -192,7 +200,10 @@ export default function AdminDashboard() {
     empty = users.filter(
       (u) =>
         Number(u.message_limit || 0) - Number(u.messages_received || 0) <= 0,
-    ).length;
+    ).length,
+    trial = users.filter((u) => u.account_status === "trial").length,
+    awaitingActivation = users.filter((u) => u.account_status === "awaiting_activation").length,
+    commercialActive = users.filter((u) => u.account_status === "active").length;
   const submitNotice = async (e: FormEvent) => {
     e.preventDefault();
     const targetRoles = Object.entries(notice.targets)
@@ -280,6 +291,9 @@ export default function AdminDashboard() {
           icon={<MessageSquarePlus />}
           onClick={() => setFilter("empty")}
         />
+        <Stat label="Em teste" value={trial} icon={<Users />} onClick={() => setFilter("trial")} />
+        <Stat label="Aguardando ativação" value={awaitingActivation} icon={<Wallet />} onClick={() => setFilter("awaiting_activation")} />
+        <Stat label="Contas ativas" value={commercialActive} icon={<Sparkles />} onClick={() => setFilter("commercial_active")} />
         <Stat
           label="Ganhos totais"
           value={`${(users.length * 22500).toLocaleString("pt-AO")} Kz`}
@@ -378,6 +392,7 @@ export default function AdminDashboard() {
           Atualizar
         </Button>
       </div>
+      <CommercialActivationQueue />
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Usuários cadastrados por dia</CardTitle>
@@ -701,7 +716,11 @@ function UserTable({ title, rows, onEdit, onMsg, onEditLimit, onSuspend, onDelet
                 <td>
                   {u.is_suspended || u.status === "suspended"
                     ? "Suspenso"
-                    : "Ativo"}
+                    : u.account_status === "trial"
+                      ? "Em teste"
+                      : u.account_status === "awaiting_activation"
+                        ? "Aguardando ativação"
+                        : "Ativo"}
                 </td>
                 <td className="space-x-2 text-right">
                   <Button size="sm" variant="outline" onClick={() => onEdit(u)}>

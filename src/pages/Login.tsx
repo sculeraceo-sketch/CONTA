@@ -18,11 +18,19 @@ export default function Login() {
     if (!loading && user) {
       const checkUserRole = async () => {
         try {
-          const { data: roleData } = await supabase
+          const { data: profile } = await supabase.from("profiles").select("email_verified").eq("user_id", user.id).maybeSingle();
+          if (!profile?.email_verified) {
+            window.sessionStorage.setItem("muwoyo_pending_email", user.email || "");
+            navigate("/confirmar-email", { replace: true, state: { email: user.email } });
+            return;
+          }
+          const { data: roleData, error: roleError } = await supabase
             .from("user_roles")
             .select("role")
             .eq("user_id", user.id)
             .maybeSingle();
+
+          if (roleError) console.warn("Não foi possível ler a função; usando cliente:", roleError.message);
 
           const userRole = roleData?.role || "client";
           if (userRole === "admin") {
@@ -42,8 +50,8 @@ export default function Login() {
     }
   }, [loading, user, navigate]);
 
-  if (!loading && user) {
-    return null;
+  if (loading || user) {
+    return <div className="min-h-screen bg-gray-100 flex items-center justify-center" aria-label="Carregando" />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,11 +77,20 @@ export default function Login() {
         return;
       }
 
-      const { data: roleData } = await supabase
+      const { data: profile } = await supabase.from("profiles").select("email_verified").eq("user_id", currentUser.id).maybeSingle();
+      if (!profile?.email_verified) {
+        window.sessionStorage.setItem("muwoyo_pending_email", currentUser.email || email);
+        navigate("/confirmar-email", { replace: true, state: { email: currentUser.email || email } });
+        return;
+      }
+
+      const { data: roleData, error: roleError } = await supabase
         .from("user_roles")
         .select("role")
         .eq("user_id", currentUser.id)
         .maybeSingle();
+
+      if (roleError) console.warn("Não foi possível ler a função; usando cliente:", roleError.message);
 
       const userRole = roleData?.role || "client";
       if (userRole === "admin") {
@@ -90,8 +107,7 @@ export default function Login() {
   };
 
   const handleCreateAccount = () => {
-    const message = encodeURIComponent("Olá! Quero criar minha conta na Muwoyo.");
-    window.open(`https://wa.me/244928663898?text=${message}`, "_blank");
+    navigate("/criar-conta");
   };
 
   return (

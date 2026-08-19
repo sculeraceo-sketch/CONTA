@@ -434,6 +434,10 @@ export type Database = {
       }
       profiles: {
         Row: {
+          account_status: string
+          email_verified: boolean
+          activated_at: string | null
+          activated_by: string | null
           ai_name: string | null
           ai_rules: string | null
           avatar_url: string | null
@@ -454,10 +458,16 @@ export type Database = {
           phone: string | null
           transfer_phone?: string | null
           status: string
+          setup_paid_at: string | null
+          setup_payment_id: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          account_status?: string
+          email_verified?: boolean
+          activated_at?: string | null
+          activated_by?: string | null
           ai_name?: string | null
           ai_rules?: string | null
           avatar_url?: string | null
@@ -477,10 +487,16 @@ export type Database = {
           phone?: string | null
           transfer_phone?: string | null
           status?: string
+          setup_paid_at?: string | null
+          setup_payment_id?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          account_status?: string
+          email_verified?: boolean
+          activated_at?: string | null
+          activated_by?: string | null
           ai_name?: string | null
           ai_rules?: string | null
           avatar_url?: string | null
@@ -500,7 +516,39 @@ export type Database = {
           phone?: string | null
           transfer_phone?: string | null
           status?: string
+          setup_paid_at?: string | null
+          setup_payment_id?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      credit_ledger: {
+        Row: {
+          amount: number
+          created_at: string
+          created_by: string | null
+          credit_type: string
+          id: string
+          reference_id: string | null
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          created_by?: string | null
+          credit_type: string
+          id?: string
+          reference_id?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          created_by?: string | null
+          credit_type?: string
+          id?: string
+          reference_id?: string | null
           user_id?: string
         }
         Relationships: []
@@ -669,10 +717,13 @@ export type Database = {
           amount_kz: number
           approved_at: string | null
           approved_by: string | null
+          confirmed_at: string | null
           created_at: string
           id: string
           messages: number
           package_id: string | null
+          payment_reference: string | null
+          request_type: string
           status: string
           user_id: string
         }
@@ -680,10 +731,13 @@ export type Database = {
           amount_kz: number
           approved_at?: string | null
           approved_by?: string | null
+          confirmed_at?: string | null
           created_at?: string
           id?: string
           messages: number
           package_id?: string | null
+          payment_reference?: string | null
+          request_type?: string
           status?: string
           user_id: string
         }
@@ -691,10 +745,13 @@ export type Database = {
           amount_kz?: number
           approved_at?: string | null
           approved_by?: string | null
+          confirmed_at?: string | null
           created_at?: string
           id?: string
           messages?: number
           package_id?: string | null
+          payment_reference?: string | null
+          request_type?: string
           status?: string
           user_id?: string
         }

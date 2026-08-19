@@ -11,7 +11,7 @@ export function TermsOfUseViewer() {
               Termos de Uso
             </CardTitle>
             <p className="text-center text-gray-600 mt-2">
-              Última actualização: 10 Maio de 2026
+              Última actualização: 18 Agosto de 2026
             </p>
           </CardHeader>
           <CardContent>
@@ -81,7 +81,28 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    4. Taxa de activação e pacotes de mensagens
+                    4. Período de teste e activação
+                  </h2>
+                  <p>
+                    Após o registo, a conta recebe 50 mensagens gratuitas para
+                    testar o agente de IA. O utilizador pode configurar o seu
+                    negócio, produtos, loja e WhatsApp conforme as permissões
+                    da plataforma. Quando as mensagens de teste terminarem, o
+                    painel continua acessível, mas o agente precisa de
+                    activação para continuar a responder.
+                  </p>
+                  <p className="mt-3">
+                    A activação exige o pagamento único do setup de 22.500 Kz.
+                    Depois da confirmação do pagamento, a conta aguarda a
+                    activação manual por um administrador ou subadministrador
+                    autorizado. Após a activação são adicionadas 200 mensagens
+                    de bónus, uma única vez por conta.
+                  </p>
+                </section>
+
+                <section>
+                  <h2 className="text-lg font-semibold mb-3">
+                    5. Taxa de activação e pacotes de mensagens
                   </h2>
                   <p className="mb-3">
                     A activação da conta Muwoyo está sujeita ao pagamento de uma
@@ -92,7 +113,7 @@ export function TermsOfUseViewer() {
                   <p className="mb-3">
                     Após a activação, o utilizador pode adquirir pacotes de
                     mensagens conforme necessário, nos seguintes volumes
-                    disponíveis: 1.000, 2.500, 7.500 e 15.000 mensagens. Os
+                    disponíveis: 500, 1.000, 3.000 e 5.000 mensagens. Os
                     pacotes adquiridos não têm data de expiração mensal e podem
                     ser utilizados ao ritmo do negócio do utilizador.
                   </p>
@@ -105,7 +126,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    5. Uso aceitável
+                    6. Uso aceitável
                   </h2>
                   <p className="mb-3">
                     O utilizador compromete-se a utilizar a plataforma Muwoyo
@@ -139,7 +160,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    6. Responsabilidades do utilizador
+                    7. Responsabilidades do utilizador
                   </h2>
                   <p>
                     O utilizador é o único responsável pelo conteúdo introduzido
@@ -154,7 +175,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    7. Disponibilidade do serviço
+                    8. Disponibilidade do serviço
                   </h2>
                   <p>
                     A Muwoyo empenha-se em garantir a máxima disponibilidade da
@@ -168,7 +189,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    8. Propriedade intelectual
+                    9. Propriedade intelectual
                   </h2>
                   <p>
                     Todos os elementos da plataforma Muwoyo, incluindo o nome,
@@ -182,7 +203,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    9. Suspensão e encerramento
+                    10. Suspensão e encerramento
                   </h2>
                   <p>
                     A Muwoyo reserva-se o direito de suspender ou encerrar o
@@ -196,7 +217,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    10. Limitação de responsabilidade
+                    11. Limitação de responsabilidade
                   </h2>
                   <p>
                     A Muwoyo não se responsabiliza por perdas de receita, perda
@@ -210,7 +231,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    11. Alterações aos termos
+                    12. Alterações aos termos
                   </h2>
                   <p>
                     A Muwoyo pode actualizar estes Termos de Uso a qualquer
@@ -224,7 +245,7 @@ export function TermsOfUseViewer() {
 
                 <section>
                   <h2 className="text-lg font-semibold mb-3">
-                    12. Lei aplicável e foro
+                    13. Lei aplicável e foro
                   </h2>
                   <p>
                     Estes Termos de Uso são regidos pela legislação da República
@@ -235,7 +256,7 @@ export function TermsOfUseViewer() {
                 </section>
 
                 <section>
-                  <h2 className="text-lg font-semibold mb-3">13. Contacto</h2>
+                  <h2 className="text-lg font-semibold mb-3">14. Contacto</h2>
                   <p>
                     Para qualquer questão relacionada com estes Termos de Uso,
                     pode contactar-nos através de suporte@muwoyo.com ou pelo

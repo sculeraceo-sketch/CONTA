@@ -11,6 +11,8 @@ import OnboardingGate from "@/components/OnboardingGate";
 import CreditGate from "@/components/CreditGate";
 import RoleHomeRedirect from "@/components/RoleHomeRedirect";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
+import EmailVerification from "./pages/EmailVerification";
 import Dashboard from "./pages/Dashboard";
 import BusinessInfo from "./pages/BusinessInfo";
 import MyWhatsApp from "./pages/MyWhatsApp";
@@ -23,6 +25,7 @@ import Schedule from "./pages/Schedule";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminTokens from "./pages/AdminTokens";
 import HumanTransfers from "./pages/HumanTransfers";
+import Tutorial from "./pages/Tutorial";
 import SubAdminDashboard from "./pages/SubAdminDashboard";
 import NotFound from "./pages/NotFound.tsx";
 import LandingPageMWY from "../LandingPageMWY";
@@ -53,6 +56,8 @@ const App = () => (
           <PushPrompt />
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/criar-conta" element={<Register />} />
+            <Route path="/confirmar-email" element={<EmailVerification />} />
             <Route path="/loja/:slug" element={<PublicStore />} />
             <Route path="/" element={<LandingPageMWY />} />
             <Route
@@ -130,6 +135,7 @@ const App = () => (
               element={protectedPage(<StoreManagement />)}
             />
             <Route path="/produtos" element={protectedPage(<MyProducts />)} />
+            <Route path="/tutorial" element={protectedPage(<Tutorial />)} />
             <Route
               path="/recargas"
               element={

@@ -4,7 +4,13 @@ import type { Database } from './types';
 
 const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL ?? '').trim();
 const SUPABASE_PUBLISHABLE_KEY = (import.meta.env.VITE_SUPABASE_ANON_KEY ?? '').trim();
-const hasSupabaseConfig = Boolean(SUPABASE_URL && SUPABASE_PUBLISHABLE_KEY);
+const hasSupabaseConfig = Boolean(
+  SUPABASE_URL &&
+    SUPABASE_PUBLISHABLE_KEY &&
+    SUPABASE_URL.startsWith('https://') &&
+    !SUPABASE_URL.includes('SEU_PROJECT_REF') &&
+    !SUPABASE_PUBLISHABLE_KEY.includes('COLE_AQUI'),
+);
 
 if (!hasSupabaseConfig) {
   console.warn('[Supabase] Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY. Add them to your .env.local or deployment environment before using auth.');

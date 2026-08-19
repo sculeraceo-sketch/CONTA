@@ -49,6 +49,11 @@ Deno.serve(async (req) => {
 
     if (!userId || !instanceName || !phoneNumber) return json({ error: "missing_fields" }, 400);
 
+    if (body.external_message_id) {
+      const { data: duplicate } = await admin.from("messages").select("id").eq("external_id", body.external_message_id).eq("direction", "outbound").maybeSingle();
+      if (duplicate) return json({ ok: true, duplicate: true });
+    }
+
     // Save outbound message(s)
     await admin.from("messages").insert({
       user_id: userId,
@@ -87,24 +92,14 @@ Deno.serve(async (req) => {
 
     await admin.rpc("recalculate_all_user_ai_balances");
 
-    // Atomically increment messages_received by `count`
-    const { data: profile } = await admin
-      .from("profiles")
-      .select("messages_received, message_limit")
-      .eq("user_id", userId)
-      .maybeSingle();
-    const used = Number(profile?.messages_received || 0);
-    const limit = Number(profile?.message_limit || 0);
-    const newUsed = used + count;
-    await admin.from("profiles").update({ messages_received: newUsed }).eq("user_id", userId);
+    const { data: remaining, error: consumeError } = await admin.rpc("consume_ai_messages", { p_user_id: userId, p_count: count });
+    if (consumeError) return json({ error: consumeError.message }, 500);
 
-    const remaining = Math.max(limit - newUsed, 0);
-
-    if (remaining === 50 || (used < 50 && remaining < 50 && remaining > 0)) {
+    if (remaining <= 10 && remaining > 0) {
       await admin.from("notifications").insert({
         user_id: userId,
-        title: "Restam 50 mensagens",
-        message: "Recarregue para continuar a usar a automação sem interrupção.",
+        title: `Restam ${remaining} mensagens`,
+        message: "A sua conta está próxima do limite de mensagens.",
         type: "credits_low",
         link: "/recargas",
       });

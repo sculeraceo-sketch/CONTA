@@ -1,4 +1,5 @@
 import { ReactNode, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useRole } from "@/hooks/useRole";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,6 +16,7 @@ import {
   Play,
   RefreshCw,
   Clock,
+  AlertTriangle,
 } from "lucide-react";
 import WhatsAppConnectDialog from "@/components/WhatsAppConnectDialog";
 import MessagesAreaChart from "@/components/MessagesAreaChart";
@@ -33,6 +35,7 @@ interface InstanceRow {
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pauseOpen, setPauseOpen] = useState(false);
@@ -43,6 +46,8 @@ export default function Dashboard() {
   const [disconnecting, setDisconnecting] = useState(false);
   const [savingPause, setSavingPause] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [accountStatus, setAccountStatus] = useState("trial");
+  const [setupPaidAt, setSetupPaidAt] = useState<string | null>(null);
 
   const pausedUntilDate = instance?.automation_paused_until
     ? new Date(instance.automation_paused_until)
@@ -70,7 +75,7 @@ export default function Dashboard() {
         .maybeSingle(),
       supabase
         .from("profiles")
-        .select("messages_received, message_limit")
+        .select("messages_received, message_limit, account_status, setup_paid_at")
         .eq("user_id", user.id)
         .maybeSingle(),
       supabase
@@ -84,6 +89,8 @@ export default function Dashboard() {
     if (prof) {
       setMessagesReceived(prof.messages_received ?? 0);
       setMessageLimit(prof.message_limit ?? 0);
+      setAccountStatus(prof.account_status ?? "trial");
+      setSetupPaidAt(prof.setup_paid_at ?? null);
     }
     setMessagesToday(count ?? 0);
     setRefreshing(false);
@@ -165,6 +172,24 @@ export default function Dashboard() {
       title="Painel de Automação"
       description="Gerencie suas automações e acompanhe conversas."
     >
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
+          <div>
+            <div className="text-xs font-semibold uppercase tracking-wider text-primary">
+              {accountStatus === "active" ? "Conta ativa" : accountStatus === "awaiting_activation" ? "Conta aguardando ativação" : "Conta em período de teste"}
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">Mensagens restantes: {remaining}</p>
+          </div>
+          {accountStatus !== "active" && (
+            <Button size="sm" variant="outline" onClick={() => navigate("/recargas")}>Ativar conta</Button>
+          )}
+      </div>
+
+      {accountStatus === "trial" && remaining <= 10 && remaining > 0 && (
+        <p className="text-sm text-amber-700">Você tem apenas {remaining} mensagens de teste restantes.</p>
+      )}
+      {accountStatus === "trial" && remaining <= 0 && (
+        <p className="text-sm text-destructive">Seu período de teste terminou. Ative a sua conta para continuar.</p>
+      )}
       {/* AUTOMATION CARD - soft emerald */}
       {!isConnected ? (
         <Card className="overflow-hidden border border-primary/20 bg-[hsl(var(--primary-soft))] text-[hsl(var(--primary-soft-foreground))] shadow-sm">

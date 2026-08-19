@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +11,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { AlertCircle, Mail, Phone } from "lucide-react";
-import { PrivacyPolicy } from "@/pages/PrivacyPolicy";
-import { TermsOfUse } from "@/pages/TermsOfUse";
 import { supabase } from "@/integrations/supabase/client";
 
 interface LegalAcceptanceProps {
@@ -25,14 +24,12 @@ export function LegalAcceptance({
   onComplete,
   onReject,
 }: LegalAcceptanceProps) {
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [legalConsent, setLegalConsent] = useState(false);
 
   const handleAccept = async () => {
-    if (!privacyAccepted || !termsAccepted || !legalConsent) return;
+    if (!legalConsent) return;
 
     setIsLoading(true);
     try {
@@ -84,34 +81,13 @@ export function LegalAcceptance({
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <Card className="mb-6">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-md shadow-lg">
         <CardHeader>
-          <CardTitle className="text-2xl">
-            Aceitação Obrigatória de Documentos Legais
-          </CardTitle>
-          <p className="text-muted-foreground mt-2">
-            Ao prosseguir, concorda com as nossas políticas e condições de uso.
-            Pode ler os documentos abaixo e voltar à mesma página quando terminar.
-          </p>
+          <CardTitle className="text-xl">Antes de continuar</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-8 md:grid-cols-2">
-            <div>
-              <PrivacyPolicy
-                onAccept={() => setPrivacyAccepted(true)}
-                onReject={handleReject}
-              />
-            </div>
-            <div>
-              <TermsOfUse
-                onAccept={() => setTermsAccepted(true)}
-                onReject={handleReject}
-              />
-            </div>
-          </div>
-
-          <div className="mt-8 rounded-lg border bg-muted/20 p-4">
+          <div className="rounded-lg border bg-muted/20 p-4">
             <div className="flex items-start gap-3">
               <input
                 id="legal-consent"
@@ -120,18 +96,17 @@ export function LegalAcceptance({
                 onChange={(e) => setLegalConsent(e.target.checked)}
                 className="mt-1 h-4 w-4"
               />
-              <label htmlFor="legal-consent" className="text-sm text-foreground">
-                Li e concordo com os Termos de Uso e Política de Privacidade e pretendo continuar.
+              <label htmlFor="legal-consent" className="text-sm leading-relaxed text-foreground">
+                Ao continuar, concorda com os nossos <Link className="text-blue-600 underline" to="/termos-uso" target="_blank">Termos de Uso</Link> e <Link className="text-blue-600 underline" to="/politica-privacidade" target="_blank">Política de Privacidade</Link>.
               </label>
             </div>
           </div>
 
-          <div className="mt-8 flex justify-center">
+          <div className="mt-5 flex justify-end">
             <Button
               onClick={handleAccept}
-              disabled={!privacyAccepted || !termsAccepted || !legalConsent || isLoading}
-              size="lg"
-              className="px-8"
+              disabled={!legalConsent || isLoading}
+              className="px-6"
             >
               {isLoading ? "Processando..." : "Continuar"}
             </Button>

@@ -42,9 +42,9 @@ function Side() {
         <Button
           variant="ghost"
           className="w-full justify-start gap-2"
-          onClick={() => {
-            signOut();
-            navigate("/login");
+          onClick={async () => {
+            await signOut();
+            navigate("/login", { replace: true });
           }}
         >
           <LogOut className="h-4 w-4" />
@@ -86,9 +86,9 @@ export default function SubAdminShell({
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => {
-                  signOut();
-                  navigate("/login");
+                onClick={async () => {
+                  await signOut();
+                  navigate("/login", { replace: true });
                 }}
               >
                 <LogOut className="h-5 w-5 text-muted-foreground" />

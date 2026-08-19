@@ -25,7 +25,7 @@ function Side({ mode }: { mode: "admin" | "sub" }) {
             <div className="min-w-0 flex-1"><div className="truncate text-sm font-semibold">{user?.email?.split("@")[0]}</div><div className="truncate text-xs text-muted-foreground">{user?.email}</div></div>
           </button>
         </ProfileSheet>
-        <Button variant="ghost" size="sm" className="w-full justify-start gap-2" onClick={() => { signOut(); navigate("/login"); }}><LogOut className="h-4 w-4" />Terminar sessão</Button>
+        <Button variant="ghost" size="sm" className="w-full justify-start gap-2" onClick={async () => { await signOut(); navigate("/login", { replace: true }); }}><LogOut className="h-4 w-4" />Terminar sessão</Button>
       </div>
     </aside>
   );

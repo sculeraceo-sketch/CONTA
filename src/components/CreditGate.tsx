@@ -25,7 +25,7 @@ export default function CreditGate({
     if (!user) return;
     const { data } = await supabase
       .from("profiles")
-      .select("messages_received, message_limit, onboarding_completed")
+      .select("messages_received, message_limit, onboarding_completed, account_status")
       .eq("user_id", user.id)
       .maybeSingle();
     if (!data?.onboarding_completed) {
@@ -34,7 +34,11 @@ export default function CreditGate({
     }
     const remaining =
       Number(data?.message_limit || 0) - Number(data?.messages_received || 0);
-    setBlocked(remaining <= 0 && Number(data?.message_limit || 0) > 0);
+    setBlocked(
+      remaining <= 0 &&
+        Number(data?.message_limit || 0) > 0 &&
+        data?.account_status === "active",
+    );
     setChecked(true);
   };
 

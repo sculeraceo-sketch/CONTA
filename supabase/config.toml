@@ -17,3 +17,15 @@ verify_jwt = false
 
 [functions.push-dispatch]
 verify_jwt = false
+
+[functions.send-email]
+verify_jwt = false
+
+[functions.send-verification-code]
+verify_jwt = false
+
+[functions.verify-email-code]
+verify_jwt = false
+
+[functions.commercial-flow]
+verify_jwt = false

@@ -4,9 +4,8 @@ import { motion } from "framer-motion";
 // Importar imagens
 import onlineStore from "@/assets/online-store.jpg";
 import whatsappChat from "@/assets/whatsapp-chat.jpg";
-import sales247 from "@/assets/sales-24-7.jpg";
-import integrationsWoman from "@/assets/integrations-woman.jpg";
-import heroWhatsAppStore from "@/assets/hero-whatsapp-store.jpg";
+import sales247Original from "@/assets/landing/sales-24h.png";
+import dashboardOriginal from "@/assets/landing/dashboard.png";
 
 const FeaturesZigzag = () => {
   const navigate = useNavigate();
@@ -37,7 +36,7 @@ const FeaturesZigzag = () => {
       highlight: "O seu negócio nunca dorme.",
       description:
         "Venda 24h por dia sem depender de dados móveis ou bateria. A Inteligencia Artificial da Muwoyo mantém o seu whatsApp sempre online com atendimento 24/7 ,mesmo que você esteja a dormir ou sem internet. Se o cliente te enviar mensagem às 3h da manhã, ele será respondido e a venda será feita. O seu negócio nunca dorme, para que você possa descansar.",
-      image: "https://i.ibb.co/gMKHJthB/4d8fa698-ae5d-49e6-a3e0-eec9613af22a.png",
+      image: sales247Original,
       alt: "Vendas 24 horas por dia",
     },
     {
@@ -63,7 +62,7 @@ const FeaturesZigzag = () => {
           </div>
         </div>
       `,
-      image: "https://i.ibb.co/20YbdFNH/8258ccc3-50ce-4dd7-8554-3e52d4af9926.png",
+      image: dashboardOriginal,
       alt: "Painel Muwoyo",
     },
   ];
@@ -105,7 +104,7 @@ const FeaturesZigzag = () => {
                     <img
                       src={feature.image}
                       alt={feature.alt}
-                      className="w-full h-auto rounded-2xl shadow-2xl"
+                      className="block w-full max-w-full h-auto rounded-2xl shadow-2xl object-contain"
                     />
                   </div>
                 </div>
@@ -143,7 +142,7 @@ const FeaturesZigzag = () => {
                   <img
                     src={feature.image}
                     alt={feature.alt}
-                    className="w-full h-auto rounded-2xl shadow-2xl max-w-2xl"
+                    className="block w-full max-w-2xl h-auto rounded-2xl shadow-2xl object-contain"
                   />
                 </div>
               </>

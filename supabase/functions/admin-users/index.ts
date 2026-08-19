@@ -1,4 +1,3 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -83,6 +82,25 @@ async function notifyAdmins(
   }
 }
 
+async function canManageTarget(admin: any, actor: { role: string; user: { id: string } }, userId: string) {
+  if (actor.role === "admin") return true;
+  const { data, error } = await admin
+    .from("profiles")
+    .select("user_id")
+    .eq("user_id", userId)
+    .eq("created_by", actor.user.id)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  return Boolean(data);
+}
+
+async function requireTarget(admin: any, actor: { role: string; user: { id: string } }, userId: string) {
+  if (!userId || !(await canManageTarget(admin, actor, userId))) {
+    return { error: "not_authorized_for_user" };
+  }
+  return null;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
@@ -155,7 +173,8 @@ Deno.serve(async (req) => {
           email,
           business_name: name,
           created_by: actor.user.id,
-          message_limit: role === "client" ? 200 : 0,
+          account_status: role === "client" ? "trial" : "active",
+          message_limit: role === "client" ? 50 : 0,
           free_messages_granted: role === "client",
           onboarding_completed: role !== "client",
         })
@@ -176,16 +195,20 @@ Deno.serve(async (req) => {
       const userId = allowed(body.userId, 60);
       const amount = Math.max(1, Math.min(1000000, Number(body.amount || 0)));
       if (!userId) return json({ error: "invalid_input" }, 400);
-      const { data: prof } = await admin
+      const targetError = await requireTarget(admin, actor, userId);
+      if (targetError) return json(targetError, 403);
+      const { data: prof, error: profileError } = await admin
         .from("profiles")
         .select("message_limit")
         .eq("user_id", userId)
         .maybeSingle();
-      const newLimit = Number(prof?.message_limit || 0) + amount;
-      await admin
+      if (profileError || !prof) return json({ error: profileError?.message || "profile_not_found" }, 404);
+      const newLimit = Number(prof.message_limit || 0) + amount;
+      const { error: updateError } = await admin
         .from("profiles")
         .update({ message_limit: newLimit })
         .eq("user_id", userId);
+      if (updateError) return json({ error: updateError.message }, 500);
       // Re-enable automation if it was paused due to credits
       await admin
         .from("instances")
@@ -212,10 +235,13 @@ Deno.serve(async (req) => {
       const userId = allowed(body.userId, 60);
       const limit = Math.max(0, Math.min(1000000, Number(body.limit || 0)));
       if (!userId) return json({ error: "invalid_input" }, 400);
-      await admin
+      const targetError = await requireTarget(admin, actor, userId);
+      if (targetError) return json(targetError, 403);
+      const { error: updateError } = await admin
         .from("profiles")
         .update({ message_limit: limit })
         .eq("user_id", userId);
+      if (updateError) return json({ error: updateError.message }, 500);
       await admin.from("notifications").insert({
         user_id: userId,
         title: "Limite de mensagens atualizado",
@@ -236,13 +262,16 @@ Deno.serve(async (req) => {
     if (action === "suspendUser") {
       const userId = allowed(body.userId, 60);
       const suspended = !!body.suspended;
-      await admin
+      const targetError = await requireTarget(admin, actor, userId);
+      if (targetError) return json(targetError, 403);
+      const { error: updateError } = await admin
         .from("profiles")
         .update({
           is_suspended: suspended,
           status: suspended ? "suspended" : "active",
         })
         .eq("user_id", userId);
+      if (updateError) return json({ error: updateError.message }, 500);
       if (actor.role === "sub_admin") {
         await notifyAdmins(
           admin,
@@ -256,6 +285,8 @@ Deno.serve(async (req) => {
 
     if (action === "deleteUser") {
       const userId = allowed(body.userId, 60);
+      const targetError = await requireTarget(admin, actor, userId);
+      if (targetError) return json(targetError, 403);
       const r = await admin.auth.admin.deleteUser(userId);
       if (r.error) return json({ error: r.error.message }, 400);
       if (actor.role === "sub_admin") {
@@ -272,14 +303,18 @@ Deno.serve(async (req) => {
     if (action === "updateUser") {
       const userId = allowed(body.userId, 60);
       if (!userId) return json({ error: "invalid_input" }, 400);
+      const targetError = await requireTarget(admin, actor, userId);
+      if (targetError) return json(targetError, 403);
       const patch: any = {};
       if (typeof body.full_name === "string")
         patch.full_name = allowed(body.full_name, 120);
       if (typeof body.business_name === "string")
         patch.business_name = allowed(body.business_name, 120);
       if (typeof body.phone === "string") patch.phone = cleanPhone(body.phone);
-      if (Object.keys(patch).length)
-        await admin.from("profiles").update(patch).eq("user_id", userId);
+      if (Object.keys(patch).length) {
+        const { error: updateError } = await admin.from("profiles").update(patch).eq("user_id", userId);
+        if (updateError) return json({ error: updateError.message }, 500);
+      }
       const authPatch: any = {};
       if (typeof body.email === "string" && isEmail(body.email))
         authPatch.email = body.email;

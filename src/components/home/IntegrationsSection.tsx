@@ -1,22 +1,25 @@
 import { CheckCircle2 } from "lucide-react";
 import integrationsWoman from "@/assets/integrations-woman.jpg";
+import googleSheets from "@/assets/landing/google-sheets.svg";
+import googleAnalytics from "@/assets/landing/google-analytics.svg";
+import googleCalendar from "@/assets/landing/google-calendar.svg";
 
 const integrations = [
   {
     name: "Google Sheets",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/3/30/Google_Sheets_logo_%282014-2020%29.svg",
+    icon: googleSheets,
     description:
       "Sincronize pedidos, clientes e inventário em tempo real com as suas folhas de cálculo.",
   },
   {
     name: "Google Analytics",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/7/77/GAnalytics.svg",
+    icon: googleAnalytics,
     description:
       "Acompanhe conversões, funil de venda e comportamento dos clientes automaticamente.",
   },
   {
     name: "Google Calendar",
-    icon: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg",
+    icon: googleCalendar,
     description: "Agende reuniões, demos e follow-ups que saem do WhatsApp.",
   },
 ];

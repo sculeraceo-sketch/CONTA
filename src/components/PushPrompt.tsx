@@ -12,7 +12,7 @@ export default function PushPrompt() {
     if (!user) return; // only show when logged in
     const dismissed = window.localStorage.getItem("muwoyo_push_prompt_dismissed");
     if (dismissed) return;
-    if (Notification && Notification.permission === "default") {
+    if ("Notification" in window && Notification.permission === "default") {
       setVisible(true);
     }
   }, [user]);
@@ -25,13 +25,13 @@ export default function PushPrompt() {
       } else {
         toast({ title: "Notificações não ativadas", description: result.reason, variant: "destructive" });
       }
-      setVisible(false);
-      window.localStorage.setItem("muwoyo_push_prompt_dismissed", "1");
+      if (result.ok) {
+        setVisible(false);
+        window.localStorage.setItem("muwoyo_push_prompt_dismissed", "1");
+      }
     } catch (err) {
       console.error(err);
       toast({ title: "Erro", description: "Falha ao ativar notificações.", variant: "destructive" });
-      setVisible(false);
-      window.localStorage.setItem("muwoyo_push_prompt_dismissed", "1");
     }
   };
 

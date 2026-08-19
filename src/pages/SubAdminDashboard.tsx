@@ -25,6 +25,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { RoleFixer } from "@/components/RoleFixer";
 import { useRole } from "@/hooks/useRole";
+import CommercialActivationQueue from "@/components/CommercialActivationQueue";
 
 type Row = {
   user_id: string;
@@ -237,6 +238,7 @@ export default function SubAdminDashboard() {
           </CardContent>
         </Card>
       </div>
+      <CommercialActivationQueue />
       <Card>
         <CardHeader>
           <CardTitle>Usuários cadastrados por mim</CardTitle>

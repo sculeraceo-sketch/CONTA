@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { MessageSquare, Check } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "@/integrations/supabase/client";
 
 type TopUpPack = {
   id: string;
@@ -16,6 +16,7 @@ export const MessagePacks = () => {
   const [packs, setPacks] = useState<TopUpPack[]>([]);
 
   useEffect(() => {
+    if (!isSupabaseConfigured) return;
     const loadPacks = async () => {
       const { data, error } = await supabase
         .from("top_up_packages")

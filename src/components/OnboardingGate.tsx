@@ -167,9 +167,9 @@ export default function OnboardingGate({
             },
             {
               user_id: user.id,
-              title: "500 mensagens grátis",
+              title: "50 mensagens grátis",
               message:
-                "Você ganhou 500 mensagens. Quando acabarem, recarregue para continuar.",
+                "Você ganhou 50 mensagens de teste. Quando acabarem, ative a sua conta para continuar.",
               type: "credits",
             },
           ]);
@@ -196,8 +196,6 @@ export default function OnboardingGate({
       .from("profiles")
       .update({
         ...form,
-        free_messages_granted: true,
-        message_limit: 500,
       })
       .eq("user_id", user.id);
     setSaving(false);

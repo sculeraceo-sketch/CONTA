@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Gift, Check } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import bonusOriginal from "@/assets/landing/bonus.png";
 
 export default function FreeMessagesBonus() {
   const navigate = useNavigate();
@@ -83,9 +84,9 @@ export default function FreeMessagesBonus() {
               className="w-full max-w-md"
             >
               <img
-                src="https://i.ibb.co/MkMfCNXR/bfe372c1-3944-48c2-9569-bc32595a8128.png"
+                src={bonusOriginal}
                 alt="200 Mensagens Gratuitas"
-                className="w-full h-auto rounded-2xl shadow-2xl"
+                className="block w-full max-w-full h-auto rounded-2xl shadow-2xl object-contain"
               />
             </motion.div>
           </div>

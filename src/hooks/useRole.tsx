@@ -24,14 +24,25 @@ export function useRole() {
     }
 
     setLoading(true);
-    supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", user.id)
-      .then(({ data }) => {
-        setRole(resolveRole((data || []).map((r) => r.role)));
-        setLoading(false);
-      });
+    let cancelled = false;
+    const loadRole = async () => {
+      try {
+        const { data } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id);
+        if (!cancelled) setRole(resolveRole((data || []).map((r) => r.role)));
+      } catch (error) {
+        console.error("Erro ao verificar a função do usuário:", error);
+        if (!cancelled) setRole("client");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+    loadRole();
+    return () => {
+      cancelled = true;
+    };
   }, [user, authLoading]);
 
   return { role, loading };

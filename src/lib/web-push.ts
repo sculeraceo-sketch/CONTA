@@ -70,29 +70,46 @@ export async function initWebPush() {
     };
   }
 
-  const permission = await Notification.requestPermission();
-  if (permission !== "granted") {
+  const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    ("standalone" in window.navigator && Boolean((window.navigator as Navigator & { standalone?: boolean }).standalone));
+
+  if (isIos && !isStandalone) {
     return {
       ok: false,
-      reason: "Permissão de notificação negada pelo usuário.",
+      reason: "No iPhone/iPad, instale a Muwoyo no ecrã principal e abra a app instalada para ativar notificações.",
     };
   }
 
   const vapidPublicKey = import.meta.env.VITE_VAPID_PUBLIC_KEY || import.meta.env.VAPID_PUBLIC_KEY;
-  if (!vapidPublicKey) {
+  if (!vapidPublicKey || vapidPublicKey.includes("COLE_AQUI")) {
     return {
       ok: false,
-      reason: "A chave pública VAPID não foi configurada. Defina VITE_VAPID_PUBLIC_KEY no .env.local e gere as chaves com npx web-push generate-vapid-keys.",
+      reason: "A chave pública VAPID não está configurada no ambiente de produção.",
+    };
+  }
+
+  const permission = Notification.permission === "default"
+    ? await Notification.requestPermission()
+    : Notification.permission;
+  if (permission !== "granted") {
+    return {
+      ok: false,
+      reason: permission === "denied"
+        ? "As notificações estão bloqueadas neste dispositivo. Ative-as nas definições do navegador e tente novamente."
+        : "A permissão de notificações não foi concluída.",
     };
   }
 
   await navigator.serviceWorker.register("/sw.js", { scope: "/" });
   const registration = await navigator.serviceWorker.ready;
 
-  const subscription = await registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
-  });
+  const subscription = await registration.pushManager.getSubscription() ||
+    await registration.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(vapidPublicKey),
+    });
 
   const {
     data: { session },

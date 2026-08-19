@@ -11,6 +11,7 @@ import {
   CalendarDays,
   Boxes,
   ArrowRightLeft,
+  PlayCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -29,6 +30,7 @@ const items = [
   { title: "Meus Produtos", to: "/produtos", icon: Boxes },
   { title: "Minha Loja", to: "/minha-loja", icon: Store },
   { title: "Recarregar mensagens", to: "/recargas", icon: CreditCard },
+  { title: "Tutorial", to: "/tutorial", icon: PlayCircle },
 ];
 
 function SidebarContent() {

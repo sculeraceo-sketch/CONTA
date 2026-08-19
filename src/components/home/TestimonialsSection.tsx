@@ -1,6 +1,12 @@
 import { Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import avatarKwame from "@/assets/landing/avatar-kwame.jpg";
+import avatarBeatriz from "@/assets/landing/avatar-beatriz.jpg";
+import avatarAntonio from "@/assets/landing/avatar-antonio.jpg";
+import avatarFernanda from "@/assets/landing/avatar-fernanda.jpg";
+import avatarSamuel from "@/assets/landing/avatar-samuel.jpg";
+import avatarMaria from "@/assets/landing/avatar-maria.jpg";
 
 const testimonials = [
   {
@@ -11,7 +17,7 @@ const testimonials = [
       "A Muwoyo transformou o meu negócio! Antes perdia muitos clientes porque não conseguia responder a tempo. Agora a IA responde 24h por dia e as vendas aumentaram 45%.",
     rating: 5,
     metric: "+45% vendas",
-    img: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=80&h=80&fit=crop&crop=face",
+    img: avatarKwame,
   },
   {
     name: "Beatriz Mendes",
@@ -21,7 +27,7 @@ const testimonials = [
       "Comecei a usar com receio, achei que a IA não ia entender meus clientes. Mas depois de ajustar o tom e treinar com as perguntas certas, ficou perfeito! Recomendo muito.",
     rating: 4,
     metric: "Superou expectativas",
-    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=face",
+    img: avatarBeatriz,
   },
   {
     name: "António Cambinda",
@@ -31,7 +37,7 @@ const testimonials = [
       "No início tive dificuldades com a configuração e achei que não ia funcionar para consultoria. Mas o suporte me ajudou e agora a IA qualifica os leads antes de eu entrar na conversa. Incrível!",
     rating: 4,
     metric: "De cético a fã",
-    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=face",
+    img: avatarAntonio,
   },
   {
     name: "Fernanda Costa",
@@ -41,7 +47,7 @@ const testimonials = [
       "Estava a procura de uma solução que funcionasse com o mercado lusófono. A Muwoyo é perfeita para isso. A IA responde em português perfeito e os meus clientes adoram!",
     rating: 5,
     metric: "+60% eficiência",
-    img: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=face",
+    img: avatarFernanda,
   },
   {
     name: "Samuel Tchipaco",
@@ -51,7 +57,7 @@ const testimonials = [
       "Confesso que no primeiro dia achei confuso e quase desisti. Mas depois que conectei o WhatsApp e configurei tudo, vi como é simples. Agora meus clientes marcam serviços sozinhos!",
     rating: 3,
     metric: "Início difícil, final feliz",
-    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=face",
+    img: avatarSamuel,
   },
   {
     name: "Maria Joana",
@@ -61,7 +67,7 @@ const testimonials = [
       "A melhor decisão que tomei para o meu negócio online. A IA fecha vendas enquanto eu durmo. Literalmente. Os meus clientes nem percebem que é automático.",
     rating: 5,
     metric: "Vendas 24/7",
-    img: "https://images.unsplash.com/photo-1523824921871-d6f1a15151f1?w=80&h=80&fit=crop&crop=face",
+    img: avatarMaria,
   },
 ];
 

@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Zap, Shield, Clock, MessageCircle } from "lucide-react";
+import heroPolo from "@/assets/landing/hero-polo.png";
+import heroTshirt from "@/assets/landing/hero-tshirt.jpg";
+import heroShirt from "@/assets/landing/hero-shirt.jpg";
+import heroJacket from "@/assets/landing/hero-jacket.jpg";
 
 interface Message {
   text: string;
@@ -27,22 +31,22 @@ const messagesSequence: Message[] = [
   {
     text: "Polo Premium Branca",
     from: "bot",
-    img: "https://www.craftclothing.ph/cdn/shop/files/plain-poloshirt-white_8be48e11-c59a-401c-b536-9aa27941bb57_600x.png?v=1740992362",
+    img: heroPolo,
   },
   {
     text: "T-shirt Casual Azul",
     from: "bot",
-    img: "https://m.media-amazon.com/images/I/51NEYi89rHL._AC_UL1200_.jpg",
+    img: heroTshirt,
   },
   {
     text: "Camisa Social Cinza",
     from: "bot",
-    img: "https://media.istockphoto.com/id/856917576/photo/formal-shirt-with-button-down-collar-isolated-on-white.jpg",
+    img: heroShirt,
   },
   {
     text: "Jaqueta Streetwear Preta",
     from: "bot",
-    img: "https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+    img: heroJacket,
   },
   {
     text: "Gostei das duas primeiras. Tem algum desconto se eu levar mais de 2 peças?",
